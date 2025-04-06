@@ -45,6 +45,9 @@ img {
     justify-content: center;
     gap: 10px;
     margin-bottom: 10em;
+    position: relative;
+    z-index: 1;
+    transition: filter 0.3s ease;
 }
 
 .item {
@@ -86,8 +89,13 @@ img {
     justify-content: space-between;
     align-items: center;
     padding: 6em 0;
+    z-index: 1000;
     pointer-events: none;
     clip-path: polygon(0 100%, 100% 100%, 100% 100%, 0% 100%);
+}
+
+.img-modal.active {
+    pointer-events: auto; /* enabled when active */
 }
 
 .img-modal .img {
