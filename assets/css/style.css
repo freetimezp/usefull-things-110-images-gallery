@@ -26,7 +26,7 @@ h1 {
 
 p {
     font-size: 14px;
-    color: gray;
+    color: grey;
     text-transform: uppercase;
 }
 
@@ -56,13 +56,14 @@ img {
 
 .item {
     width: calc(12.5% - 20px);
-    height: 200xp;
+    height: 200px;
     border: 1px solid rgba(255, 255, 255, 0.125);
     overflow: hidden;
     background: rgba(15, 15, 15, 0.9);
     padding: 15px;
     cursor: pointer;
 }
+
 .item-img {
     margin-bottom: 10px;
     height: calc(100% - 40px);
@@ -107,7 +108,7 @@ img {
 }
 
 .img-modal.active {
-    pointer-events: auto; /* enabled when active */
+    pointer-events: auto;
 }
 
 .img-modal .img {

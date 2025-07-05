@@ -8,6 +8,7 @@ window.addEventListener("load", () => {
 });
 
 function generateRandomName() {
+    //просто усі літери (великі та маленькі) + цифри та _
     const characters = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890_";
     const nameLength = Math.floor(Math.random() * 3) + 6;
 
@@ -22,7 +23,8 @@ function generateRandomName() {
 }
 
 function generateRandomImageName() {
-    const imageNumber = Math.floor(Math.random() * 73) + 1; // кількість зображень
+    //кількість зображень у папці images 73
+    const imageNumber = Math.floor(Math.random() * 73) + 1;
 
     return `img${imageNumber}.jpg`;
 }
@@ -32,13 +34,49 @@ document.addEventListener("DOMContentLoaded", function () {
     const imgModal = document.querySelector(".img-modal");
     const imgViewContainer = imgModal.querySelector(".img");
     const modalName = imgModal.querySelector(".img-name p");
+    const closeBtn = document.querySelector(".close-btn");
 
-    const tl = gsap.timeline({ paused: true });
     let clickedItemImgSrc = "";
     let clickedItemName = "";
 
-    // кількість елементів, що буде створена
-    for (let i = 1; i <= 100; i++) {
+    const tl = gsap.timeline({ paused: true });
+
+    tl.eventCallback("onStart", () => {
+        imgModal.classList.add("active");
+        document.body.style.overflow = "hidden";
+    });
+
+    tl.eventCallback("onReverseComplete", () => {
+        imgModal.classList.remove("active");
+        document.body.style.overflow = "auto";
+    });
+
+    tl.to(".img-modal", {
+        clipPath: "polygon(0 0%, 100% 0%, 100% 100%, 0% 100%)",
+        ease: "power4.inOut",
+        duration: 0.75,
+    });
+
+    tl.to(".img-modal .img", {
+        clipPath: "polygon(0 0%, 100% 0%, 100% 100%, 0% 100%)",
+        ease: "power4.inOut",
+        duration: 0.75,
+    });
+
+    tl.to(
+        ".modal-item p",
+        {
+            top: 0,
+            ease: "power4.inOut",
+            duration: 1,
+            stagger: {
+                amount: 0.2,
+            },
+        },
+        "<"
+    );
+
+    for (let i = 1; i < 10; i++) {
         const item = document.createElement("div");
         item.classList.add("item");
 
@@ -60,39 +98,17 @@ document.addEventListener("DOMContentLoaded", function () {
         item.appendChild(itemName);
 
         item.addEventListener("click", () => {
-            const dataImg = itemName.getAttribute("data-img");
+            clickedItemImgSrc = `./assets/images/${randomImageName}`;
+            clickedItemName = randomName;
 
-            if (imgViewContainer && modalName) {
-                clickedItemImgSrc = `./assets/images/${dataImg}.jpg`;
-                clickedItemName = itemName.textContent;
+            imgViewContainer.innerHTML = `<img src="${clickedItemImgSrc}" alt="">`;
+            modalName.textContent = clickedItemName;
 
-                tl.eventCallback("onStart", () => {
-                    imgModal.classList.add("active");
-                });
-
-                tl.eventCallback("onReverseComplete", () => {
-                    imgModal.classList.remove("active");
-                });
-
-                if (tl.reversed()) {
-                    imgViewContainer.innerHTML = `<img src="${clickedItemImgSrc}" alt="" />`;
-                    modalName.textContent = clickedItemName;
-                    tl.play(); // open
-                } else {
-                    tl.reverse().eventCallback("onReverseComplete", () => {
-                        imgViewContainer.innerHTML = `<img src="${clickedItemImgSrc}" alt="" />`;
-                        modalName.textContent = clickedItemName;
-                        tl.play();
-                        tl.eventCallback("onReverseComplete", null); // clear callback
-                    });
-                }
-            }
+            tl.play(0);
         });
 
         galleryContainer.appendChild(item);
     }
-
-    const closeBtn = document.querySelector(".close-btn");
 
     if (closeBtn) {
         closeBtn.addEventListener("click", () => {
@@ -101,38 +117,4 @@ document.addEventListener("DOMContentLoaded", function () {
             }
         });
     }
-
-    function revealModal() {
-        tl.to(".img-modal", 0.75, {
-            clipPath: "polygon(0 0%, 100% 0%, 100% 100%, 0% 100%)",
-            ease: "power4.inOut",
-            poinerEvents: "auto",
-        });
-
-        tl.to(".img-modal .img", 0.75, {
-            clipPath: "polygon(0 0%, 100% 0%, 100% 100%, 0% 100%)",
-            ease: "power4.inOut",
-        });
-
-        tl.to(
-            ".modal-item p",
-            1,
-            {
-                top: 0,
-                ease: "power4.inOut",
-                stagger: {
-                    amount: 0.2,
-                },
-            },
-            "<"
-        ).reverse();
-    }
-
-    if (!tl.reversed()) {
-        document.body.style.overflow = "hidden";
-    } else {
-        document.body.style.overflow = "auto";
-    }
-
-    revealModal();
 });
