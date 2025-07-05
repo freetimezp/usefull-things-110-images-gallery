@@ -8,7 +8,7 @@ window.addEventListener("load", () => {
 });
 
 function generateRandomName() {
-    //просто усі літери (великі та маленькі) + цифри та _
+    //просто усі букви, цифри та _
     const characters = "QWERTYUIOPASDFGHJKLZXCVBNMqwertyuiopasdfghjklzxcvbnm1234567890_";
     const nameLength = Math.floor(Math.random() * 3) + 6;
 
@@ -16,6 +16,7 @@ function generateRandomName() {
 
     for (let i = 0; i < nameLength; i++) {
         const randomIndex = Math.floor(Math.random() * characters.length);
+
         randomName += characters.charAt(randomIndex);
     }
 
@@ -23,7 +24,7 @@ function generateRandomName() {
 }
 
 function generateRandomImageName() {
-    //кількість зображень у папці images 73
+    //відповідно до кількості зображень у нас в папці images 73
     const imageNumber = Math.floor(Math.random() * 73) + 1;
 
     return `img${imageNumber}.jpg`;
@@ -37,7 +38,7 @@ document.addEventListener("DOMContentLoaded", function () {
     const closeBtn = document.querySelector(".close-btn");
 
     let clickedItemImgSrc = "";
-    let clickedItemName = "";
+    let clickedItemname = "";
 
     const tl = gsap.timeline({ paused: true });
 
@@ -76,7 +77,8 @@ document.addEventListener("DOMContentLoaded", function () {
         "<"
     );
 
-    for (let i = 1; i < 10; i++) {
+    //буде створено лише 10 елементів, потім ми збільшимо кількість
+    for (let i = 1; i <= 150; i++) {
         const item = document.createElement("div");
         item.classList.add("item");
 
@@ -99,10 +101,10 @@ document.addEventListener("DOMContentLoaded", function () {
 
         item.addEventListener("click", () => {
             clickedItemImgSrc = `./assets/images/${randomImageName}`;
-            clickedItemName = randomName;
+            clickedItemname = randomName;
 
-            imgViewContainer.innerHTML = `<img src="${clickedItemImgSrc}" alt="">`;
-            modalName.textContent = clickedItemName;
+            imgViewContainer.innerHTML = `<img src="${clickedItemImgSrc}" alt=""/>`;
+            modalName.textContent = randomName;
 
             tl.play(0);
         });
@@ -112,9 +114,7 @@ document.addEventListener("DOMContentLoaded", function () {
 
     if (closeBtn) {
         closeBtn.addEventListener("click", () => {
-            if (!tl.reversed()) {
-                tl.reverse();
-            }
+            if (!tl.reversed()) tl.reverse();
         });
     }
 });
