@@ -1,4 +1,3 @@
-
 window.addEventListener("load", () => {
     const scroll = new LocomotiveScroll({
         el: document.querySelector("[data-scroll-container]"),
@@ -19,11 +18,11 @@ function generateRandomName() {
         randomName += characters.charAt(randomIndex);
     }
 
-    return randomName + '.jpg';
+    return randomName + ".jpg";
 }
 
 function generateRandomImageName() {
-    const imageNumber = Math.floor(Math.random() * 40) + 1;
+    const imageNumber = Math.floor(Math.random() * 73) + 1; // кількість зображень
 
     return `img${imageNumber}.jpg`;
 }
@@ -38,7 +37,8 @@ document.addEventListener("DOMContentLoaded", function () {
     let clickedItemImgSrc = "";
     let clickedItemName = "";
 
-    for (let i = 1; i <= 80; i++) {
+    // кількість елементів, що буде створена
+    for (let i = 1; i <= 100; i++) {
         const item = document.createElement("div");
         item.classList.add("item");
 
@@ -75,12 +75,10 @@ document.addEventListener("DOMContentLoaded", function () {
                 });
 
                 if (tl.reversed()) {
-                    // If modal is hidden, update content first, then open
                     imgViewContainer.innerHTML = `<img src="${clickedItemImgSrc}" alt="" />`;
                     modalName.textContent = clickedItemName;
                     tl.play(); // open
                 } else {
-                    // If modal is open, close it first, then change content & reopen
                     tl.reverse().eventCallback("onReverseComplete", () => {
                         imgViewContainer.innerHTML = `<img src="${clickedItemImgSrc}" alt="" />`;
                         modalName.textContent = clickedItemName;
@@ -108,22 +106,26 @@ document.addEventListener("DOMContentLoaded", function () {
         tl.to(".img-modal", 0.75, {
             clipPath: "polygon(0 0%, 100% 0%, 100% 100%, 0% 100%)",
             ease: "power4.inOut",
-            poinerEvents: "auto"
+            poinerEvents: "auto",
         });
 
         tl.to(".img-modal .img", 0.75, {
             clipPath: "polygon(0 0%, 100% 0%, 100% 100%, 0% 100%)",
-            ease: "power4.inOut"
+            ease: "power4.inOut",
         });
 
-        tl.to(".modal-item p", 1, {
-            top: 0,
-            ease: "power4.inOut",
-            stagger: {
-                amount: 0.2
-            }
-        }, "<").reverse();
-
+        tl.to(
+            ".modal-item p",
+            1,
+            {
+                top: 0,
+                ease: "power4.inOut",
+                stagger: {
+                    amount: 0.2,
+                },
+            },
+            "<"
+        ).reverse();
     }
 
     if (!tl.reversed()) {
@@ -134,21 +136,3 @@ document.addEventListener("DOMContentLoaded", function () {
 
     revealModal();
 });
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
